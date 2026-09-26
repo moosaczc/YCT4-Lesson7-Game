@@ -1,0 +1,119 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>🎁 第二关：词语宝箱</title><style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;background:linear-gradient(#eef6ff,#f9fbff);color:#17395f}
+body{min-height:100vh}.app{width:min(1000px,100%);margin:auto;padding:14px}.screen{display:none;min-height:calc(100vh - 28px);align-items:center;justify-content:center}.screen.active{display:flex}
+.panel{width:100%;background:#fff;border:1px solid #d9e8fb;border-radius:28px;box-shadow:0 16px 40px rgba(31,78,140,.14);padding:clamp(20px,4vw,40px)}.hero{text-align:center}
+.tag{display:inline-flex;padding:8px 14px;border-radius:999px;background:#eaf3ff;color:#153d78;font-weight:900}h1{margin:14px 0 7px;font-size:clamp(34px,6vw,55px);color:#123d79}.subtitle{margin:0;color:#58718f;font-size:clamp(18px,3vw,24px);font-weight:800}
+.mission{max-width:760px;margin:22px auto;padding:18px;border:1px solid #d7e7fb;border-radius:22px;background:linear-gradient(135deg,#f9fcff,#edf5ff)}.mission-title{font-weight:1000}.mainline{font-size:clamp(24px,4.5vw,38px);font-weight:1000;color:#133e7b;margin-top:8px}.py{color:#5c7596;line-height:1.5}.ar{direction:rtl;unicode-bidi:plaintext;font-family:Tahoma,Arial,sans-serif;line-height:1.65}.mission .ar{font-size:19px;color:#405a78;margin-top:6px}
+.chips{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-top:13px}.chip{padding:8px 12px;border-radius:13px;border:1px solid #dbe8f8;background:#fff;font-weight:900}.primary{border:0;border-radius:18px;padding:15px 28px;background:linear-gradient(135deg,#2563eb,#174ea6);color:#fff;font-weight:1000;font-size:20px;cursor:pointer}
+.topbar{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;margin-bottom:16px}.track{height:14px;background:#e6eef9;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#60a5fa,#2563eb);transition:.3s}.stats{display:flex;gap:9px;flex-wrap:wrap}.stat{background:#f5f9ff;border:1px solid #dbe7f7;border-radius:14px;padding:8px 12px;font-weight:900}
+.card{border:1px solid #dce9fa;border-radius:24px;padding:clamp(18px,3vw,28px)}.mode{display:inline-block;background:#edf5ff;color:#1f56a6;border-radius:999px;padding:7px 11px;font-size:14px;font-weight:900;margin-bottom:9px}.scene{min-height:140px;border-radius:20px;background:linear-gradient(180deg,#dff2ff 0 58%,#dff0d7 58%);display:flex;align-items:center;justify-content:center;margin-bottom:16px}.scene span{font-size:90px}
+.qzh{text-align:center;font-size:clamp(23px,4vw,35px);font-weight:1000;line-height:1.4;color:#173d6d}.qpy{text-align:center;margin-top:4px}.qar{text-align:center;color:#405a78;font-size:18px;margin:5px 0 16px}
+.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.answer{min-height:115px;border:2px solid #d9e8fa;border-radius:19px;background:#fbfdff;padding:13px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center}.azh{font-size:clamp(19px,3vw,26px);font-weight:1000;text-align:center}.apy,.aar{font-size:14px;color:#607895;margin-top:4px;text-align:center}.answer.correct{border-color:#16a34a;background:#ecfdf3}.answer.wrong{border-color:#dc2626;background:#fff1f2;animation:shake .35s}
+.feedback{min-height:72px;margin-top:15px;border-radius:17px;padding:12px;text-align:center;opacity:0}.feedback.show{opacity:1}.feedback.good{background:#ecfdf3;color:#146d35}.feedback.bad{background:#fff1f2;color:#ae2525}.fzh{font-weight:1000;font-size:22px}.far{font-weight:800;font-size:15px;margin-top:4px}
+.next-wrap{text-align:center;min-height:55px;margin-top:11px}.next{display:none;border:0;border-radius:15px;background:#17457f;color:#fff;padding:12px 22px;font-weight:900}.next.show{display:inline-block}
+.end{text-align:center}.trophy{font-size:88px}.finalScore{font-size:60px;font-weight:1000;color:#174b91}.finalMsg,.review{max-width:780px;margin:16px auto;padding:16px;border-radius:19px}.finalMsg{background:#f7fbff;border:1px solid #dceaff}.review{background:#fff9e9;border:1px solid #f2d89b;line-height:1.7}
+.lesson-nav{position:fixed;top:10px;left:10px;right:10px;z-index:99;display:flex;justify-content:space-between;pointer-events:none}.lesson-nav div{pointer-events:auto}.lesson-nav button{border:0;border-radius:999px;padding:9px 13px;background:rgba(18,61,121,.93);color:#fff;font-weight:900}.lesson-nav .navNext{background:#16a34a;display:none}
+@keyframes shake{25%{transform:translateX(-7px)}50%{transform:translateX(7px)}75%{transform:translateX(-4px)}}@media(max-width:680px){.topbar{grid-template-columns:1fr}.answers{grid-template-columns:1fr}.app{padding:9px}.panel{padding:17px}}
+
+.answer .aar{
+  display:block;
+  font-size:clamp(20px,3.4vw,28px);
+  color:#173d6d;
+  font-weight:900;
+  line-height:1.7;
+}
+.answer-pinyin-only{
+  font-size:clamp(27px,4.5vw,38px);
+  color:#173d6d;
+  font-weight:1000;
+  letter-spacing:.4px;
+}
+.answer-zh-py{
+  text-align:center;
+}
+.answer-main-zh{
+  font-size:clamp(22px,3.6vw,31px);
+  color:#173d6d;
+  font-weight:1000;
+  line-height:1.35;
+}
+.answer-main-py{
+  margin-top:6px;
+  font-size:clamp(15px,2.4vw,20px);
+  color:#607895;
+  font-weight:800;
+}
+.quizHint{
+  text-align:center;
+  margin:0 0 14px;
+  padding:9px 12px;
+  border-radius:14px;
+  background:#fff8e8;
+  border:1px solid #f3d894;
+  color:#795516;
+  font-weight:900;
+}
+
+
+.choice-label{
+  position:absolute;
+  top:9px;
+  left:11px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#17457f;
+  color:#fff;
+  font-size:17px;
+  font-weight:1000;
+  box-shadow:0 5px 12px rgba(23,69,127,.18);
+}
+.answer{
+  position:relative;
+  padding-top:44px!important;
+}
+.answer.correct .choice-label{
+  background:#16a34a;
+}
+.answer.wrong .choice-label{
+  background:#dc2626;
+}
+
+</style></head><body>
+<div class="lesson-nav"><div><button onclick="backMap()">← 返回地图</button></div><div><button id="navNext" class="navNext" onclick="nextLevel()">下一关 →</button></div></div>
+<div class="app"><section id="start" class="screen active"><div class="panel hero"><div class="tag">YCT标准教程4 · Lesson 7 · 第2关</div><h1>🎁 第二关：词语宝箱</h1><p class="subtitle">看中文词，选择正确的阿拉伯语意思。</p><div class="mission"><div class="mission-title">🎯 本关学习目标</div><div class="mainline">理解中文词汇的阿拉伯语意思</div><div class="py">Lǐjiě Zhōngwén cíhuì de Ālābóyǔ yìsi</div><div class="ar">فهم معنى الكلمات الصينية باللغة العربية</div><div class="chips"><div class="chip">路 lù</div><div class="chip">条 tiáo</div><div class="chip">开 kāi</div><div class="chip">公共汽车</div><div class="chip">远 / 近</div></div></div><button class="primary" onclick="startGame()">开始挑战 ▶</button></div></section>
+<section id="game" class="screen"><div class="panel"><div class="topbar"><div class="track"><div id="bar" class="bar"></div></div><div class="stats"><div id="count" class="stat">第 1 / 8</div><div class="stat">当前得分：<span id="score">0</span> ⭐</div></div></div><div class="card"><div id="mode" class="mode"></div><div class="scene"><span id="scene"></span></div><div id="qzh" class="qzh"></div><div id="qpy" class="qpy py"></div><div id="qar" class="qar ar"></div><div class="quizHint">请选择正确的阿拉伯语意思 · اختر المعنى العربي الصحيح</div><div id="answers" class="answers"></div><div id="fb" class="feedback"></div><div class="next-wrap"><button id="next" class="next" onclick="nextQ()">下一题 ➜</button></div></div></div></section>
+<section id="end" class="screen"><div class="panel end"><div class="trophy">🏆</div><h1>🎁 第二关：词语宝箱完成！</h1><div class="finalScore"><span id="final">0</span> / 80</div><div id="finalMsg" class="finalMsg"></div><div class="review"><strong>本关重点</strong><br>一条路 yì tiáo lù = طريق واحد<br>很远 hěn yuǎn = بعيد جدًا<br>很近 hěn jìn = قريب جدًا<br>学校旁边 xuéxiào pángbiān = بجانب المدرسة</div><button class="primary" onclick="restart()">🔄 再玩一次</button></div></section></div>
+<script>const LEVEL=2,QS=[{"mode": "词义配对", "scene": "🚌", "zh": "公共汽车", "py": "gōnggòng qìchē", "ar": "اختر المعنى الصحيح.", "answers": [{"zh": "公共汽车", "py": "gōnggòng qìchē", "ar": "الحافلة"}, {"zh": "车站", "py": "chēzhàn", "ar": "المحطة"}, {"zh": "路", "py": "lù", "ar": "الطريق"}, {"zh": "动物园", "py": "dòngwùyuán", "ar": "حديقة الحيوان"}], "correct": 0, "good": "🎉 配对成功！", "goodAr": "تمت المطابقة بنجاح!"}, {"mode": "词义配对", "scene": "🦓", "zh": "动物园", "py": "dòngwùyuán", "ar": "اختر المعنى الصحيح.", "answers": [{"zh": "学校", "py": "xuéxiào", "ar": "المدرسة"}, {"zh": "动物园", "py": "dòngwùyuán", "ar": "حديقة الحيوان"}, {"zh": "车站", "py": "chēzhàn", "ar": "المحطة"}, {"zh": "路", "py": "lù", "ar": "الطريق"}], "correct": 1, "good": "🎉 配对成功！", "goodAr": "تمت المطابقة بنجاح!"}, {"mode": "拼音挑战", "scene": "🚗", "zh": "“开”的正确拼音是？", "py": "“Kāi” de zhèngquè pīnyīn shì?", "ar": "ما البينيين الصحيح لكلمة «开»؟", "answers": [{"zh": "开", "py": "kāi", "ar": "يقود / يفتح"}, {"zh": "凯", "py": "kǎi", "ar": "صوت مختلف"}, {"zh": "看", "py": "kàn", "ar": "ينظر"}, {"zh": "快", "py": "kuài", "ar": "سريع"}], "correct": 0, "good": "🎉 对！开 kāi。", "goodAr": "صحيح! نطق «开» هو kāi."}, {"mode": "拼音挑战", "scene": "🛣️", "zh": "“路”的正确拼音是？", "py": "“Lù” de zhèngquè pīnyīn shì?", "ar": "ما البينيين الصحيح لكلمة «路»؟", "answers": [{"zh": "路", "py": "lù", "ar": "طريق"}, {"zh": "绿", "py": "lǜ", "ar": "أخضر"}, {"zh": "楼", "py": "lóu", "ar": "مبنى"}, {"zh": "来", "py": "lái", "ar": "يأتي"}], "correct": 0, "good": "🎉 正确！路 lù。", "goodAr": "صحيح! نطق «路» هو lù."}, {"mode": "远近", "scene": "📏", "zh": "“很远”是什么意思？", "py": "“Hěn yuǎn” shì shénme yìsi?", "ar": "ماذا تعني «很远»؟", "answers": [{"zh": "很远", "py": "hěn yuǎn", "ar": "بعيد جدًا"}, {"zh": "很近", "py": "hěn jìn", "ar": "قريب جدًا"}, {"zh": "不远", "py": "bù yuǎn", "ar": "ليس بعيدًا"}, {"zh": "不近", "py": "bù jìn", "ar": "ليس قريبًا"}], "correct": 0, "good": "🎉 很好！很远 = بعيد جدًا。", "goodAr": "رائع! «很远» تعني بعيد جدًا."}, {"mode": "远近", "scene": "📍", "zh": "“很近”是什么意思？", "py": "“Hěn jìn” shì shénme yìsi?", "ar": "ماذا تعني «很近»؟", "answers": [{"zh": "很近", "py": "hěn jìn", "ar": "قريب جدًا"}, {"zh": "很远", "py": "hěn yuǎn", "ar": "بعيد جدًا"}, {"zh": "不对", "py": "bú duì", "ar": "غير صحيح"}, {"zh": "旁边", "py": "pángbiān", "ar": "بجانب"}], "correct": 0, "good": "🎉 正确！很近 = قريب جدًا。", "goodAr": "صحيح! «很近» تعني قريب جدًا."}, {"mode": "量词", "scene": "1️⃣🛣️", "zh": "哪一个说法正确？", "py": "Nǎ yí ge shuōfǎ zhèngquè?", "ar": "أي تعبير صحيح؟", "answers": [{"zh": "一条路", "py": "yì tiáo lù", "ar": "طريق واحد"}, {"zh": "一个路", "py": "yí ge lù", "ar": "صياغة غير مناسبة"}, {"zh": "一只路", "py": "yì zhī lù", "ar": "صياغة خاطئة"}, {"zh": "一本路", "py": "yì běn lù", "ar": "صياغة خاطئة"}], "correct": 0, "good": "🎉 对！一条路。", "goodAr": "صحيح! نقول «一条路»."}, {"mode": "位置词", "scene": "🚏🏫", "zh": "学校的____有一个车站。", "py": "Xuéxiào de ____ yǒu yí ge chēzhàn.", "ar": "يوجد موقف حافلات ____ المدرسة.", "answers": [{"zh": "旁边", "py": "pángbiān", "ar": "بجانب"}, {"zh": "远", "py": "yuǎn", "ar": "بعيد"}, {"zh": "开", "py": "kāi", "ar": "يقود"}, {"zh": "条", "py": "tiáo", "ar": "كلمة قياس"}], "correct": 0, "good": "🏆 正确！学校旁边有一个车站。", "goodAr": "صحيح! يوجد موقف حافلات بجانب المدرسة."}];let i=0,score=0,locked=false;const $=id=>document.getElementById(id);
+function backMap(){if(parent&&parent!==window)parent.postMessage({type:"lesson7BackToMap",level:LEVEL},"*");else location.href="index.html"}function nextLevel(){parent.postMessage({type:"lesson7OpenLevel",level:3},"*")}
+
+function shuffleAnswers(arr){
+  const items=arr.map((answer,originalIndex)=>({answer,originalIndex}));
+  for(let k=items.length-1;k>0;k--){
+    const j=Math.floor(Math.random()*(k+1));
+    [items[k],items[j]]=[items[j],items[k]];
+  }
+  return items;
+}
+
+function startGame(){i=0;score=0;$("start").classList.remove("active");$("game").classList.add("active");render()}
+function render(){locked=false;const q=QS[i];$("count").textContent=`第 ${i+1} / ${QS.length}`;$("score").textContent=score;$("bar").style.width=`${i/QS.length*100}%`;$("mode").textContent=q.mode;$("scene").textContent=q.scene;$("qzh").textContent=q.zh;$("qpy").textContent=q.py;$("qar").textContent=q.ar;$("fb").className="feedback";$("fb").innerHTML="";$("next").classList.remove("show");const box=$("answers");box.innerHTML="";const shuffled=shuffleAnswers(q.answers);shuffled.forEach((item,pos)=>{const a=item.answer,n=item.originalIndex;const b=document.createElement("button");b.className="answer";
+
+let answerHTML="";
+if(q.zh.includes("“开”的正确拼音") || q.zh.includes("“路”的正确拼音")){
+  // 拼音辨音题：答案只显示拼音
+  answerHTML=`<div class="answer-pinyin-only">${a.py}</div>`;
+}else if(q.zh.includes("哪一个说法正确") || q.zh.includes("学校的____有一个车站")){
+  // 中文结构题：答案显示中文 + 拼音
+  answerHTML=`<div class="answer-zh-py"><div class="answer-main-zh">${a.zh}</div><div class="answer-main-py">${a.py}</div></div>`;
+}else{
+  // 词义理解题：答案只显示阿拉伯语
+  answerHTML=`<div class="aar ar">${a.ar}</div>`;
+}
+
+b.innerHTML=`<div class="choice-label">${"ABCD"[pos]}</div>`+answerHTML;b.onclick=()=>choose(n,b);box.appendChild(b)})}
+function choose(n,b){if(locked)return;const q=QS[i];if(n===q.correct){locked=true;b.classList.add("correct");score+=10;$("score").textContent=score;$("fb").className="feedback good show";$("fb").innerHTML=`<div class="fzh">${q.good}</div><div class="py" style="margin-top:5px">${q.answers[q.correct].zh} · ${q.answers[q.correct].py}</div><div class="far ar">${q.answers[q.correct].ar}</div>`;[...$("answers").children].forEach(x=>{x.disabled=true});$("bar").style.width=`${(i+1)/QS.length*100}%`;$("next").classList.add("show")}else{b.classList.add("wrong");$("fb").className="feedback bad show";$("fb").innerHTML='<div class="fzh">💪 再想一想！</div><div class="far ar">حاول مرة أخرى!</div>';setTimeout(()=>b.classList.remove("wrong"),650)}}
+function nextQ(){if(!locked)return;i++;i>=QS.length?finish():render()}function finish(){$("game").classList.remove("active");$("end").classList.add("active");$("final").textContent=score;let z,a;if(score===80){z="🎉 恭喜你顺利通关！";a="تهانينا! لقد أكملت المرحلة بنجاح!"}else if(score>=60){z="🌟 非常棒！继续练习！";a="ممتاز جدًا! استمر في التمرين!"}else if(score>=40){z="💪 不错！再挑战一次！";a="جيد! حاول مرة أخرى!"}else{z="📚 别放弃，再来一次！";a="لا تستسلم، حاول مرة أخرى!"}$("finalMsg").innerHTML=`<div class="fzh">${z}</div><div class="far ar">${a}</div>`;$("navNext").style.display="inline-block";if(parent&&parent!==window)parent.postMessage({type:"lesson7Complete",level:LEVEL},"*")}function restart(){$("end").classList.remove("active");$("start").classList.add("active")}</script></body></html>

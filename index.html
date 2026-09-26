@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>YCT4 Lesson 7 总闯关地图</title>
+  <style>
+    *{box-sizing:border-box}
+    html,body{margin:0;padding:0;background:linear-gradient(180deg,#eef6ff,#fafcff);font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;color:#15345d}
+    button{font:inherit}
+    .page{width:min(1180px,100%);margin:auto;padding:14px}
+    .header{display:flex;gap:12px;justify-content:space-between;align-items:stretch;flex-wrap:wrap;margin-bottom:14px}
+    .card{background:#fff;border:1px solid #d9e8fb;border-radius:22px;box-shadow:0 16px 42px rgba(28,76,145,.14)}
+    .head{padding:16px 18px;flex:1 1 520px}
+    .head h1{margin:0;font-size:clamp(24px,4vw,38px);color:#123d79}
+    .head p{margin:8px 0 0;color:#607895;font-weight:700;line-height:1.6}
+    .progressCard{padding:16px 18px;min-width:280px;flex:0 1 320px}
+    .progressRow{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;font-weight:900}
+    .track{height:12px;background:#e6eef8;border-radius:999px;overflow:hidden}
+    .bar{height:100%;width:0;background:linear-gradient(90deg,#60a5fa,#16a34a);transition:.3s}
+    .reset{margin-top:10px;border:0;background:#edf5ff;color:#174ea6;padding:9px 14px;border-radius:999px;font-weight:900;cursor:pointer}
+    .mapCard{padding:18px}
+    .mapWrap{position:relative;max-width:940px;margin:0 auto}
+    .mapImage{display:block;width:100%;height:auto;border-radius:22px;box-shadow:0 10px 26px rgba(0,0,0,.08)}
+    .hotspot{
+      position:absolute;transform:translate(-50%,-50%);
+      width:62px;height:62px;border:0;border-radius:50%;
+      display:flex;align-items:center;justify-content:center;
+      font-weight:1000;font-size:26px;color:#fff;
+      background:linear-gradient(135deg,#ff8d4a,#ff6435);
+      border:4px solid #fff;box-shadow:0 10px 20px rgba(255,100,53,.30);
+      cursor:pointer;transition:.18s;
+    }
+    .hotspot:hover{transform:translate(-50%,-50%) scale(1.06)}
+    .hotspot.done{background:linear-gradient(135deg,#41bf79,#16924f)}
+    .hint{
+      margin-top:14px;padding:12px 16px;border-radius:16px;
+      background:#f7fbff;border:1px solid #dceaff;color:#57708c;
+      text-align:center;font-weight:800
+    }
+    .overlay{
+      display:none;position:fixed;inset:0;background:rgba(8,21,45,.60);
+      z-index:50;align-items:center;justify-content:center;padding:16px;
+    }
+    .overlay.show{display:flex}
+    .modal{
+      width:min(760px,100%);background:#fff;border-radius:28px;
+      box-shadow:0 18px 48px rgba(0,0,0,.18);padding:22px;position:relative
+    }
+    .closeBtn{
+      position:absolute;right:14px;top:14px;border:0;width:40px;height:40px;
+      border-radius:50%;background:#edf5ff;color:#123d79;font-size:22px;cursor:pointer
+    }
+    .modal h2{margin:2px 0 6px;color:#123d79;font-size:32px}
+    .sub{margin:0;color:#607895;font-weight:700}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px}
+    .box{background:#f8fbff;border:1px solid #dbe8fb;border-radius:18px;padding:14px}
+    .box h3{margin:0 0 8px;color:#123d79}
+    .box ul{margin:0;padding-left:18px;line-height:1.8;color:#516a87}
+    .actions{display:flex;gap:10px;justify-content:flex-end;flex-wrap:wrap;margin-top:18px}
+    .enter,.cancel{
+      border:0;border-radius:15px;padding:13px 20px;font-weight:1000;cursor:pointer
+    }
+    .enter{background:linear-gradient(135deg,#2563eb,#174ea6);color:#fff}
+    .cancel{background:#edf5ff;color:#123d79}
+    .shell{
+      display:none;position:fixed;inset:0;background:#edf5ff;z-index:90;
+    }
+    .shell.show{display:block}
+    .iframeTop{
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+      padding:10px 12px;background:#123d79;color:#fff
+    }
+    .iframeTop .title{font-weight:1000}
+    .smallBtn{
+      border:0;border-radius:999px;padding:9px 13px;background:#fff;color:#123d79;
+      font-weight:900;cursor:pointer
+    }
+    iframe{width:100%;height:calc(100vh - 56px);border:0;background:#fff}
+    .win{
+      display:none;position:fixed;inset:0;background:rgba(8,21,45,.65);
+      z-index:120;align-items:center;justify-content:center;padding:16px
+    }
+    .win.show{display:flex}
+    .winBox{
+      width:min(620px,100%);background:#fff;border-radius:28px;padding:30px;text-align:center
+    }
+    .cup{font-size:88px}
+    .winBox h2{font-size:40px;color:#123d79;margin:6px 0}
+    .ar{direction:rtl;font-family:Tahoma,Arial,sans-serif}
+    @media(max-width:760px){
+      .grid{grid-template-columns:1fr}
+      .hotspot{width:52px;height:52px;font-size:22px}
+      .mapCard{padding:10px}
+      .modal h2{font-size:26px}
+    }
+  </style>
+</head>
+<body>
+  <div class="page">
+    <div class="header">
+      <div class="card head">
+        <h1>🚌 YCT4 Lesson 7 · 总闯关地图</h1>
+        <p>
+          第七课：你们每天怎么去学校？<br>
+          Nǐmen měitiān zěnme qù xuéxiào?
+        </p>
+      </div>
+
+      <div class="card progressCard">
+        <div class="progressRow">
+          <span>学习进度</span>
+          <span id="progressText">0 / 5</span>
+        </div>
+        <div class="track"><div id="progressBar" class="bar"></div></div>
+        <button class="reset" id="resetBtn">↻ 重置本课进度</button>
+      </div>
+    </div>
+
+    <div class="card mapCard">
+      <div class="mapWrap" id="mapWrap">
+        <img class="mapImage" src="lesson7_map.png" alt="Lesson 7 闯关地图" />
+        <button class="hotspot" style="left:25.5%; top:34.5%;" data-level="1" aria-label="第一关">1</button>
+        <button class="hotspot" style="left:76.5%; top:40.5%;" data-level="2" aria-label="第二关">2</button>
+        <button class="hotspot" style="left:27%; top:66.5%;" data-level="3" aria-label="第三关">3</button>
+        <button class="hotspot" style="left:24.5%; top:88.5%;" data-level="4" aria-label="第四关">4</button>
+        <button class="hotspot" style="left:76.5%; top:89.5%;" data-level="5" aria-label="第五关">5</button>
+      </div>
+      <div class="hint">点击地图上的数字按钮，即可进入对应关卡学习。</div>
+    </div>
+  </div>
+
+  <div id="overlay" class="overlay">
+    <div class="modal">
+      <button class="closeBtn" id="closeModal">×</button>
+      <h2 id="modalTitle"></h2>
+      <p class="sub" id="modalSub"></p>
+      <div class="grid">
+        <div class="box">
+          <h3>🎯 学习目标</h3>
+          <ul id="goalList"></ul>
+        </div>
+        <div class="box">
+          <h3>📚 核心内容</h3>
+          <ul id="contentList"></ul>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="cancel" id="cancelBtn">返回地图</button>
+        <button class="enter" id="enterBtn">进入学习 ▶</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="shell" class="shell">
+    <div class="iframeTop">
+      <div class="title" id="frameTitle">Lesson 7</div>
+      <button class="smallBtn" id="backMapBtn">← 返回地图</button>
+    </div>
+    <iframe id="lessonFrame" src="about:blank" title="Lesson content"></iframe>
+  </div>
+
+  <div id="win" class="win">
+    <div class="winBox">
+      <div class="cup">🏆</div>
+      <h2>Lesson 7 全部通关！</h2>
+      <p>你已经完成《你们每天怎么去学校？》全部学习任务！</p>
+      <p class="ar">تهانينا! لقد أكملت جميع مراحل الدرس السابع بنجاح!</p>
+      <button class="enter" id="winCloseBtn">返回地图 ✓</button>
+    </div>
+  </div>
+
+  <script>
+    const LEVEL_INFO = {
+      1: {
+        title: "第一关：交通大发现",
+        sub: "认识交通、地点、远近和位置词。",
+        goals: ["认识公共汽车、动物园、路等词", "理解远 / 近 / 旁边", "为后面句型学习打基础"],
+        content: ["公共汽车 gōnggòng qìchē", "动物园 dòngwùyuán", "开车 kāichē", "远 yuǎn / 近 jìn", "旁边 pángbiān"]
+      },
+      2: {
+        title: "第二关：词语宝箱",
+        sub: "用中文 + 拼音 + 阿语巩固核心词汇。",
+        goals: ["中文和拼音对应", "理解阿语词义", "掌握量词“条”"],
+        content: ["路 lù", "条 tiáo", "开 kāi", "很远 / 很近", "学校旁边"]
+      },
+      3: {
+        title: "第三关：怎么去学校？",
+        sub: "学会询问和回答每天怎么去学校。",
+        goals: ["会问“你们每天怎么去学校？”", "会回答交通方式", "会表达学校远近"],
+        content: ["我坐公共汽车去学校。", "哥哥自己开车去学校。", "我的学校很近。", "哥哥的学校有一点儿远。"]
+      },
+      4: {
+        title: "第四关：动物园路线任务",
+        sub: "确认路线并询问车站位置。",
+        goals: ["会说“走这条路，对吗？”", "理解“有一点儿远”", "会问“车站在哪儿？”", "会答“车站就在旁边。”"],
+        content: ["去动物园走这条路，对吗？", "对，但是有一点儿远。", "你可以坐公共汽车。", "车站在哪儿？", "车站就在旁边。"]
+      },
+      5: {
+        title: "第五关：最终挑战",
+        sub: "综合运用本课全部知识。",
+        goals: ["综合交通方式", "综合远近表达", "综合路线和位置表达"],
+        content: ["怎么去学校？", "远吗？", "动物园路线", "车站位置"]
+      }
+    };
+
+    const overlay = document.getElementById('overlay');
+    const modalTitle = document.getElementById('modalTitle');
+    const modalSub = document.getElementById('modalSub');
+    const goalList = document.getElementById('goalList');
+    const contentList = document.getElementById('contentList');
+    const enterBtn = document.getElementById('enterBtn');
+    const cancelBtn = document.getElementById('cancelBtn');
+    const closeModal = document.getElementById('closeModal');
+
+    const shell = document.getElementById('shell');
+    const lessonFrame = document.getElementById('lessonFrame');
+    const backMapBtn = document.getElementById('backMapBtn');
+    const frameTitle = document.getElementById('frameTitle');
+
+    const progressText = document.getElementById('progressText');
+    const progressBar = document.getElementById('progressBar');
+    const resetBtn = document.getElementById('resetBtn');
+
+    const win = document.getElementById('win');
+    const winCloseBtn = document.getElementById('winCloseBtn');
+
+    const storageKey = 'YCT4_L7_progress';
+    let currentLevel = 1;
+    let progress = loadProgress();
+
+    function loadProgress() {
+      try {
+        return JSON.parse(localStorage.getItem(storageKey) || '{}');
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveProgress() {
+      localStorage.setItem(storageKey, JSON.stringify(progress));
+      renderProgress();
+    }
+
+    function renderProgress() {
+      const count = [1,2,3,4,5].filter(n => !!progress[n]).length;
+      progressText.textContent = `${count} / 5`;
+      progressBar.style.width = `${count / 5 * 100}%`;
+
+      document.querySelectorAll('.hotspot').forEach(btn => {
+        const level = Number(btn.dataset.level);
+        if (progress[level]) {
+          btn.classList.add('done');
+          btn.textContent = '✓';
+        } else {
+          btn.classList.remove('done');
+          btn.textContent = String(level);
+        }
+      });
+    }
+
+    function openModal(level) {
+      currentLevel = level;
+      const info = LEVEL_INFO[level];
+      modalTitle.textContent = info.title + (progress[level] ? ' · 已通关' : '');
+      modalSub.textContent = info.sub;
+      goalList.innerHTML = info.goals.map(item => `<li>${item}</li>`).join('');
+      contentList.innerHTML = info.content.map(item => `<li>${item}</li>`).join('');
+      overlay.classList.add('show');
+    }
+
+    function closeInfoModal() {
+      overlay.classList.remove('show');
+    }
+
+    function openLevel(level) {
+      currentLevel = level;
+      const info = LEVEL_INFO[level];
+      frameTitle.textContent = info.title;
+      lessonFrame.src = `level${level}.html`;
+      shell.classList.add('show');
+    }
+
+    function closeLevel() {
+      shell.classList.remove('show');
+      lessonFrame.src = 'about:blank';
+      renderProgress();
+    }
+
+    document.querySelectorAll('.hotspot').forEach(btn => {
+      btn.addEventListener('click', () => {
+        openModal(Number(btn.dataset.level));
+      });
+    });
+
+    enterBtn.addEventListener('click', () => {
+      closeInfoModal();
+      openLevel(currentLevel);
+    });
+
+    cancelBtn.addEventListener('click', closeInfoModal);
+    closeModal.addEventListener('click', closeInfoModal);
+    backMapBtn.addEventListener('click', closeLevel);
+    winCloseBtn.addEventListener('click', () => win.classList.remove('show'));
+
+    resetBtn.addEventListener('click', () => {
+      if (confirm('确定重置本课进度吗？')) {
+        progress = {};
+        saveProgress();
+      }
+    });
+
+    window.addEventListener('message', (event) => {
+      const data = event.data || {};
+      if (data.type === 'lesson7Complete') {
+        progress[data.level] = true;
+        saveProgress();
+        if ([1,2,3,4,5].every(n => progress[n])) {
+          setTimeout(() => win.classList.add('show'), 400);
+        }
+      }
+      if (data.type === 'lesson7BackToMap') {
+        closeLevel();
+      }
+      if (data.type === 'lesson7OpenLevel') {
+        openLevel(data.level);
+      }
+    });
+
+    renderProgress();
+  </script>
+</body>
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>🏆 最终挑战：上学与问路大师</title><style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;background:linear-gradient(#eef6ff,#f9fbff);color:#17395f}
+body{min-height:100vh}.app{width:min(1000px,100%);margin:auto;padding:14px}.screen{display:none;min-height:calc(100vh - 28px);align-items:center;justify-content:center}.screen.active{display:flex}
+.panel{width:100%;background:#fff;border:1px solid #d9e8fb;border-radius:28px;box-shadow:0 16px 40px rgba(31,78,140,.14);padding:clamp(20px,4vw,40px)}.hero{text-align:center}
+.tag{display:inline-flex;padding:8px 14px;border-radius:999px;background:#eaf3ff;color:#153d78;font-weight:900}h1{margin:14px 0 7px;font-size:clamp(34px,6vw,55px);color:#123d79}.subtitle{margin:0;color:#58718f;font-size:clamp(18px,3vw,24px);font-weight:800}
+.mission{max-width:760px;margin:22px auto;padding:18px;border:1px solid #d7e7fb;border-radius:22px;background:linear-gradient(135deg,#f9fcff,#edf5ff)}.mission-title{font-weight:1000}.mainline{font-size:clamp(24px,4.5vw,38px);font-weight:1000;color:#133e7b;margin-top:8px}.py{color:#5c7596;line-height:1.5}.ar{direction:rtl;unicode-bidi:plaintext;font-family:Tahoma,Arial,sans-serif;line-height:1.65}.mission .ar{font-size:19px;color:#405a78;margin-top:6px}
+.chips{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-top:13px}.chip{padding:8px 12px;border-radius:13px;border:1px solid #dbe8f8;background:#fff;font-weight:900}.primary{border:0;border-radius:18px;padding:15px 28px;background:linear-gradient(135deg,#2563eb,#174ea6);color:#fff;font-weight:1000;font-size:20px;cursor:pointer}
+.topbar{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;margin-bottom:16px}.track{height:14px;background:#e6eef9;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#60a5fa,#2563eb);transition:.3s}.stats{display:flex;gap:9px;flex-wrap:wrap}.stat{background:#f5f9ff;border:1px solid #dbe7f7;border-radius:14px;padding:8px 12px;font-weight:900}
+.card{border:1px solid #dce9fa;border-radius:24px;padding:clamp(18px,3vw,28px)}.mode{display:inline-block;background:#edf5ff;color:#1f56a6;border-radius:999px;padding:7px 11px;font-size:14px;font-weight:900;margin-bottom:9px}.scene{min-height:140px;border-radius:20px;background:linear-gradient(180deg,#dff2ff 0 58%,#dff0d7 58%);display:flex;align-items:center;justify-content:center;margin-bottom:16px}.scene span{font-size:90px}
+.qzh{text-align:center;font-size:clamp(23px,4vw,35px);font-weight:1000;line-height:1.4;color:#173d6d}.qpy{text-align:center;margin-top:4px}.qar{text-align:center;color:#405a78;font-size:18px;margin:5px 0 16px}
+.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.answer{min-height:115px;border:2px solid #d9e8fa;border-radius:19px;background:#fbfdff;padding:13px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center}.azh{font-size:clamp(19px,3vw,26px);font-weight:1000;text-align:center}.apy,.aar{font-size:14px;color:#607895;margin-top:4px;text-align:center}.answer.correct{border-color:#16a34a;background:#ecfdf3}.answer.wrong{border-color:#dc2626;background:#fff1f2;animation:shake .35s}
+.feedback{min-height:72px;margin-top:15px;border-radius:17px;padding:12px;text-align:center;opacity:0}.feedback.show{opacity:1}.feedback.good{background:#ecfdf3;color:#146d35}.feedback.bad{background:#fff1f2;color:#ae2525}.fzh{font-weight:1000;font-size:22px}.far{font-weight:800;font-size:15px;margin-top:4px}
+.next-wrap{text-align:center;min-height:55px;margin-top:11px}.next{display:none;border:0;border-radius:15px;background:#17457f;color:#fff;padding:12px 22px;font-weight:900}.next.show{display:inline-block}
+.end{text-align:center}.trophy{font-size:88px}.finalScore{font-size:60px;font-weight:1000;color:#174b91}.finalMsg,.review{max-width:780px;margin:16px auto;padding:16px;border-radius:19px}.finalMsg{background:#f7fbff;border:1px solid #dceaff}.review{background:#fff9e9;border:1px solid #f2d89b;line-height:1.7}
+.lesson-nav{position:fixed;top:10px;left:10px;right:10px;z-index:99;display:flex;justify-content:space-between;pointer-events:none}.lesson-nav div{pointer-events:auto}.lesson-nav button{border:0;border-radius:999px;padding:9px 13px;background:rgba(18,61,121,.93);color:#fff;font-weight:900}.lesson-nav .navNext{background:#16a34a;display:none}
+@keyframes shake{25%{transform:translateX(-7px)}50%{transform:translateX(7px)}75%{transform:translateX(-4px)}}@media(max-width:680px){.topbar{grid-template-columns:1fr}.answers{grid-template-columns:1fr}.app{padding:9px}.panel{padding:17px}}
+
+.answer-zh-py{
+  text-align:center;
+}
+.answer-main-zh{
+  font-size:clamp(22px,3.6vw,31px);
+  color:#173d6d;
+  font-weight:1000;
+  line-height:1.35;
+}
+.answer-main-py{
+  margin-top:6px;
+  font-size:clamp(15px,2.4vw,20px);
+  color:#607895;
+  font-weight:800;
+}
+
+
+.choice-label{
+  position:absolute;
+  top:9px;
+  left:11px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#17457f;
+  color:#fff;
+  font-size:17px;
+  font-weight:1000;
+  box-shadow:0 5px 12px rgba(23,69,127,.18);
+}
+.answer{
+  position:relative;
+  padding-top:44px!important;
+}
+.answer.correct .choice-label{
+  background:#16a34a;
+}
+.answer.wrong .choice-label{
+  background:#dc2626;
+}
+
+</style></head><body>
+<div class="lesson-nav"><div><button onclick="backMap()">← 返回地图</button></div><div><button id="navNext" class="navNext" onclick="nextLevel()">查看总地图 ✓</button></div></div>
+<div class="app"><section id="start" class="screen active"><div class="panel hero"><div class="tag">YCT标准教程4 · Lesson 7 · 第5关</div><h1>🏆 最终挑战：上学与问路大师</h1><p class="subtitle">综合运用交通、远近、路线和位置表达。</p><div class="mission"><div class="mission-title">🎯 本关学习目标</div><div class="mainline">综合运用 Lesson 7 全部核心知识</div><div class="py">Zōnghé yùnyòng Lesson 7 quánbù héxīn zhīshi</div><div class="ar">استخدام جميع معارف الدرس السابع بشكل متكامل</div><div class="chips"><div class="chip">怎么去学校</div><div class="chip">远 / 近</div><div class="chip">动物园路线</div><div class="chip">车站位置</div></div></div><button class="primary" onclick="startGame()">开始挑战 ▶</button></div></section>
+<section id="game" class="screen"><div class="panel"><div class="topbar"><div class="track"><div id="bar" class="bar"></div></div><div class="stats"><div id="count" class="stat">第 1 / 8</div><div class="stat">当前得分：<span id="score">0</span> ⭐</div></div></div><div class="card"><div id="mode" class="mode"></div><div class="scene"><span id="scene"></span></div><div id="qzh" class="qzh"></div><div id="qpy" class="qpy py"></div><div id="qar" class="qar ar"></div><div id="answers" class="answers"></div><div id="fb" class="feedback"></div><div class="next-wrap"><button id="next" class="next" onclick="nextQ()">下一题 ➜</button></div></div></div></section>
+<section id="end" class="screen"><div class="panel end"><div class="trophy">🏆</div><h1>🏆 最终挑战：上学与问路大师完成！</h1><div class="finalScore"><span id="final">0</span> / 80</div><div id="finalMsg" class="finalMsg"></div><div class="review"><strong>本关重点</strong><br>你们每天怎么去学校？<br>学校远吗？<br>去动物园走这条路，对吗？<br>车站在哪儿？</div><button class="primary" onclick="restart()">🔄 再玩一次</button></div></section></div>
+<script>const LEVEL=5,QS=[{"mode": "词汇总复习", "scene": "🚌", "zh": "哪一个词表示“الحافلة”？", "py": "Nǎ yí ge cí biǎoshì “الحافلة”?", "ar": "أي كلمة صينية تعني الحافلة؟", "answers": [{"zh": "公共汽车", "py": "gōnggòng qìchē", "ar": "الحافلة"}, {"zh": "动物园", "py": "dòngwùyuán", "ar": "حديقة الحيوان"}, {"zh": "路", "py": "lù", "ar": "الطريق"}, {"zh": "旁边", "py": "pángbiān", "ar": "بجانب"}], "correct": 0, "good": "🎉 正确！", "goodAr": "صحيح!"}, {"mode": "交通方式", "scene": "🏫🚌", "zh": "你们每天怎么去学校？", "py": "Nǐmen měitiān zěnme qù xuéxiào?", "ar": "كيف تذهبون إلى المدرسة كل يوم؟", "answers": [{"zh": "我坐公共汽车去学校。", "py": "Wǒ zuò gōnggòng qìchē qù xuéxiào.", "ar": "أذهب إلى المدرسة بالحافلة."}, {"zh": "车站就在旁边。", "py": "Chēzhàn jiù zài pángbiān.", "ar": "المحطة بجانب مباشرة."}, {"zh": "这条路很远。", "py": "Zhè tiáo lù hěn yuǎn.", "ar": "هذا الطريق بعيد جدًا."}, {"zh": "动物园在哪儿？", "py": "Dòngwùyuán zài nǎr?", "ar": "أين حديقة الحيوان؟"}], "correct": 0, "good": "🎉 很好！", "goodAr": "ممتاز!"}, {"mode": "课文理解", "scene": "🚗", "zh": "哥哥怎么去学校？", "py": "Gēge zěnme qù xuéxiào?", "ar": "كيف يذهب الأخ إلى المدرسة؟", "answers": [{"zh": "自己开车去学校。", "py": "Zìjǐ kāichē qù xuéxiào.", "ar": "يقود السيارة بنفسه إلى المدرسة."}, {"zh": "坐公共汽车。", "py": "Zuò gōnggòng qìchē.", "ar": "يركب الحافلة."}, {"zh": "走这条路。", "py": "Zǒu zhè tiáo lù.", "ar": "يسلك هذا الطريق."}, {"zh": "就在旁边。", "py": "Jiù zài pángbiān.", "ar": "بجانب مباشرة."}], "correct": 0, "good": "🎉 对！", "goodAr": "صحيح!"}, {"mode": "远近", "scene": "📏", "zh": "哥哥的学校怎么样？", "py": "Gēge de xuéxiào zěnmeyàng?", "ar": "كيف هي مدرسة الأخ من حيث المسافة؟", "answers": [{"zh": "有一点儿远。", "py": "Yǒu yìdiǎnr yuǎn.", "ar": "بعيدة قليلًا."}, {"zh": "很近。", "py": "Hěn jìn.", "ar": "قريبة جدًا."}, {"zh": "就在旁边。", "py": "Jiù zài pángbiān.", "ar": "بجانب مباشرة."}, {"zh": "不对。", "py": "Bú duì.", "ar": "غير صحيح."}], "correct": 0, "good": "🎉 正确！", "goodAr": "صحيح!"}, {"mode": "路线问答", "scene": "🦁🛣️", "zh": "“去动物园走这条路，对吗？”正确回答是？", "py": "“Qù dòngwùyuán zǒu zhè tiáo lù, duì ma?” zhèngquè huídá shì?", "ar": "ما الجواب الصحيح عن الطريق إلى حديقة الحيوان؟", "answers": [{"zh": "对，但是有一点儿远，你可以坐公共汽车。", "py": "Duì, dànshì yǒu yìdiǎnr yuǎn, nǐ kěyǐ zuò gōnggòng qìchē.", "ar": "نعم، لكنه بعيد قليلًا، يمكنك ركوب الحافلة."}, {"zh": "我的学校很近。", "py": "Wǒ de xuéxiào hěn jìn.", "ar": "مدرستي قريبة جدًا."}, {"zh": "哥哥自己开车。", "py": "Gēge zìjǐ kāichē.", "ar": "الأخ يقود السيارة بنفسه."}, {"zh": "今天星期三。", "py": "Jīntiān xīngqīsān.", "ar": "اليوم الأربعاء."}], "correct": 0, "good": "🎉 很好！", "goodAr": "رائع!"}, {"mode": "车站位置", "scene": "🚏", "zh": "车站在哪儿？", "py": "Chēzhàn zài nǎr?", "ar": "أين المحطة؟", "answers": [{"zh": "车站就在旁边。", "py": "Chēzhàn jiù zài pángbiān.", "ar": "المحطة بجانب مباشرة."}, {"zh": "车站很远吗？", "py": "Chēzhàn hěn yuǎn ma?", "ar": "هل المحطة بعيدة؟"}, {"zh": "我开车去学校。", "py": "Wǒ kāichē qù xuéxiào.", "ar": "أقود السيارة إلى المدرسة."}, {"zh": "去动物园。", "py": "Qù dòngwùyuán.", "ar": "أذهب إلى حديقة الحيوان."}], "correct": 0, "good": "🎉 正确！", "goodAr": "صحيح!"}, {"mode": "综合语序", "scene": "🧩", "zh": "请选择语序正确的句子。", "py": "Qǐng xuǎnzé yǔxù zhèngquè de jùzi.", "ar": "اختر الجملة ذات الترتيب الصحيح.", "answers": [{"zh": "我坐公共汽车去学校。", "py": "Wǒ zuò gōnggòng qìchē qù xuéxiào.", "ar": "أذهب إلى المدرسة بالحافلة."}, {"zh": "我去学校公共汽车坐。", "py": "Wǒ qù xuéxiào gōnggòng qìchē zuò.", "ar": "ترتيب غير صحيح"}, {"zh": "公共汽车学校我坐去。", "py": "Gōnggòng qìchē xuéxiào wǒ zuò qù.", "ar": "ترتيب غير صحيح"}, {"zh": "学校我公共汽车去坐。", "py": "Xuéxiào wǒ gōnggòng qìchē qù zuò.", "ar": "ترتيب غير صحيح"}], "correct": 0, "good": "🎉 完全正确！", "goodAr": "صحيح تمامًا!"}, {"mode": "终极挑战", "scene": "🏆", "zh": "哪一组最能代表本课学习内容？", "py": "Nǎ yì zǔ zuì néng dàibiǎo běn kè xuéxí nèiróng?", "ar": "أي مجموعة تمثل محتوى هذا الدرس أفضل؟", "answers": [{"zh": "怎么去学校？远吗？去动物园走这条路，对吗？车站在哪儿？", "py": "Zěnme qù xuéxiào? Yuǎn ma? Qù dòngwùyuán zǒu zhè tiáo lù, duì ma? Chēzhàn zài nǎr?", "ar": "كيف تذهب إلى المدرسة؟ هل هي بعيدة؟ هل هذا طريق حديقة الحيوان؟ أين المحطة؟"}, {"zh": "你有笔吗？星期几？", "py": "Nǐ yǒu bǐ ma? Xīngqī jǐ?", "ar": "هل لديك قلم؟ ما اليوم؟"}, {"zh": "你喜欢什么水果？", "py": "Nǐ xǐhuan shénme shuǐguǒ?", "ar": "ما الفاكهة التي تحبها؟"}, {"zh": "你家有几口人？", "py": "Nǐ jiā yǒu jǐ kǒu rén?", "ar": "كم عدد أفراد أسرتك؟"}], "correct": 0, "good": "🏆 恭喜！Lesson 7 最终挑战完成！", "goodAr": "تهانينا! لقد أكملت التحدي النهائي للدرس السابع!"}];let i=0,score=0,locked=false;const $=id=>document.getElementById(id);
+function backMap(){if(parent&&parent!==window)parent.postMessage({type:"lesson7BackToMap",level:LEVEL},"*");else location.href="index.html"}function nextLevel(){parent.postMessage({type:"lesson7BackToMap",level:LEVEL},"*")}
+
+function shuffleAnswers(arr){
+  const items=arr.map((answer,originalIndex)=>({answer,originalIndex}));
+  for(let k=items.length-1;k>0;k--){
+    const j=Math.floor(Math.random()*(k+1));
+    [items[k],items[j]]=[items[j],items[k]];
+  }
+  return items;
+}
+
+function startGame(){i=0;score=0;$("start").classList.remove("active");$("game").classList.add("active");render()}
+function render(){locked=false;const q=QS[i];$("count").textContent=`第 ${i+1} / ${QS.length}`;$("score").textContent=score;$("bar").style.width=`${i/QS.length*100}%`;$("mode").textContent=q.mode;$("scene").textContent=q.scene;$("qzh").textContent=q.zh;$("qpy").textContent=q.py;$("qar").textContent=q.ar;$("fb").className="feedback";$("fb").innerHTML="";$("next").classList.remove("show");const box=$("answers");box.innerHTML="";const shuffled=shuffleAnswers(q.answers);shuffled.forEach((item,pos)=>{const a=item.answer,n=item.originalIndex;const b=document.createElement("button");b.className="answer";
+
+let answerHTML="";
+if(
+  q.zh.includes("哪一个词表示“الحافلة”") ||
+  q.zh.includes("你们每天怎么去学校") ||
+  q.zh.includes("哥哥怎么去学校") ||
+  q.zh.includes("哥哥的学校怎么样") ||
+  q.zh.includes("“去动物园走这条路，对吗？”正确回答是") ||
+  q.zh.includes("车站在哪儿") ||
+  q.zh.includes("请选择语序正确的句子") ||
+  q.zh.includes("哪一组最能代表本课学习内容")
+){
+  // 最终挑战指定题目：答案只显示中文 + 拼音
+  answerHTML=`<div class="answer-zh-py"><div class="answer-main-zh">${a.zh}</div><div class="answer-main-py">${a.py}</div></div>`;
+}else{
+  answerHTML=`<div class="azh">${a.zh}</div><div class="apy">${a.py}</div><div class="aar ar">${a.ar}</div>`;
+}
+
+b.innerHTML=`<div class="choice-label">${"ABCD"[pos]}</div>`+answerHTML;b.onclick=()=>choose(n,b);box.appendChild(b)})}
+function choose(n,b){if(locked)return;const q=QS[i];if(n===q.correct){locked=true;b.classList.add("correct");score+=10;$("score").textContent=score;$("fb").className="feedback good show";$("fb").innerHTML=`<div class="fzh">${q.good}</div><div class="py" style="margin-top:5px">${q.answers[q.correct].zh} · ${q.answers[q.correct].py}</div><div class="far ar">${q.answers[q.correct].ar}</div>`;[...$("answers").children].forEach(x=>{x.disabled=true});$("bar").style.width=`${(i+1)/QS.length*100}%`;$("next").classList.add("show")}else{b.classList.add("wrong");$("fb").className="feedback bad show";$("fb").innerHTML='<div class="fzh">💪 再想一想！</div><div class="far ar">حاول مرة أخرى!</div>';setTimeout(()=>b.classList.remove("wrong"),650)}}
+function nextQ(){if(!locked)return;i++;i>=QS.length?finish():render()}function finish(){$("game").classList.remove("active");$("end").classList.add("active");$("final").textContent=score;let z,a;if(score===80){z="🎉 恭喜你顺利通关！";a="تهانينا! لقد أكملت المرحلة بنجاح!"}else if(score>=60){z="🌟 非常棒！继续练习！";a="ممتاز جدًا! استمر في التمرين!"}else if(score>=40){z="💪 不错！再挑战一次！";a="جيد! حاول مرة أخرى!"}else{z="📚 别放弃，再来一次！";a="لا تستسلم، حاول مرة أخرى!"}$("finalMsg").innerHTML=`<div class="fzh">${z}</div><div class="far ar">${a}</div>`;$("navNext").style.display="inline-block";if(parent&&parent!==window)parent.postMessage({type:"lesson7Complete",level:LEVEL},"*")}function restart(){$("end").classList.remove("active");$("start").classList.add("active")}</script></body></html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>🚏 第一关：交通大发现</title><style>
+*{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;background:linear-gradient(#eef6ff,#f9fbff);color:#17395f}
+body{min-height:100vh}.app{width:min(1000px,100%);margin:auto;padding:14px}.screen{display:none;min-height:calc(100vh - 28px);align-items:center;justify-content:center}.screen.active{display:flex}
+.panel{width:100%;background:#fff;border:1px solid #d9e8fb;border-radius:28px;box-shadow:0 16px 40px rgba(31,78,140,.14);padding:clamp(20px,4vw,40px)}.hero{text-align:center}
+.tag{display:inline-flex;padding:8px 14px;border-radius:999px;background:#eaf3ff;color:#153d78;font-weight:900}h1{margin:14px 0 7px;font-size:clamp(34px,6vw,55px);color:#123d79}.subtitle{margin:0;color:#58718f;font-size:clamp(18px,3vw,24px);font-weight:800}
+.mission{max-width:760px;margin:22px auto;padding:18px;border:1px solid #d7e7fb;border-radius:22px;background:linear-gradient(135deg,#f9fcff,#edf5ff)}.mission-title{font-weight:1000}.mainline{font-size:clamp(24px,4.5vw,38px);font-weight:1000;color:#133e7b;margin-top:8px}.py{color:#5c7596;line-height:1.5}.ar{direction:rtl;unicode-bidi:plaintext;font-family:Tahoma,Arial,sans-serif;line-height:1.65}.mission .ar{font-size:19px;color:#405a78;margin-top:6px}
+.chips{display:flex;gap:9px;flex-wrap:wrap;justify-content:center;margin-top:13px}.chip{padding:8px 12px;border-radius:13px;border:1px solid #dbe8f8;background:#fff;font-weight:900}.primary{border:0;border-radius:18px;padding:15px 28px;background:linear-gradient(135deg,#2563eb,#174ea6);color:#fff;font-weight:1000;font-size:20px;cursor:pointer}
+.topbar{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;margin-bottom:16px}.track{height:14px;background:#e6eef9;border-radius:999px;overflow:hidden}.bar{height:100%;width:0;background:linear-gradient(90deg,#60a5fa,#2563eb);transition:.3s}.stats{display:flex;gap:9px;flex-wrap:wrap}.stat{background:#f5f9ff;border:1px solid #dbe7f7;border-radius:14px;padding:8px 12px;font-weight:900}
+.card{border:1px solid #dce9fa;border-radius:24px;padding:clamp(18px,3vw,28px)}.mode{display:inline-block;background:#edf5ff;color:#1f56a6;border-radius:999px;padding:7px 11px;font-size:14px;font-weight:900;margin-bottom:9px}.scene{min-height:140px;border-radius:20px;background:linear-gradient(180deg,#dff2ff 0 58%,#dff0d7 58%);display:flex;align-items:center;justify-content:center;margin-bottom:16px}.scene span{font-size:90px}
+.qzh{text-align:center;font-size:clamp(23px,4vw,35px);font-weight:1000;line-height:1.4;color:#173d6d}.qpy{text-align:center;margin-top:4px}.qar{text-align:center;color:#405a78;font-size:18px;margin:5px 0 16px}
+.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}.answer{min-height:115px;border:2px solid #d9e8fa;border-radius:19px;background:#fbfdff;padding:13px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center}.azh{font-size:clamp(19px,3vw,26px);font-weight:1000;text-align:center}.apy,.aar{font-size:14px;color:#607895;margin-top:4px;text-align:center}.answer.correct{border-color:#16a34a;background:#ecfdf3}.answer.wrong{border-color:#dc2626;background:#fff1f2;animation:shake .35s}
+.feedback{min-height:72px;margin-top:15px;border-radius:17px;padding:12px;text-align:center;opacity:0}.feedback.show{opacity:1}.feedback.good{background:#ecfdf3;color:#146d35}.feedback.bad{background:#fff1f2;color:#ae2525}.fzh{font-weight:1000;font-size:22px}.far{font-weight:800;font-size:15px;margin-top:4px}
+.next-wrap{text-align:center;min-height:55px;margin-top:11px}.next{display:none;border:0;border-radius:15px;background:#17457f;color:#fff;padding:12px 22px;font-weight:900}.next.show{display:inline-block}
+.end{text-align:center}.trophy{font-size:88px}.finalScore{font-size:60px;font-weight:1000;color:#174b91}.finalMsg,.review{max-width:780px;margin:16px auto;padding:16px;border-radius:19px}.finalMsg{background:#f7fbff;border:1px solid #dceaff}.review{background:#fff9e9;border:1px solid #f2d89b;line-height:1.7}
+.lesson-nav{position:fixed;top:10px;left:10px;right:10px;z-index:99;display:flex;justify-content:space-between;pointer-events:none}.lesson-nav div{pointer-events:auto}.lesson-nav button{border:0;border-radius:999px;padding:9px 13px;background:rgba(18,61,121,.93);color:#fff;font-weight:900}.lesson-nav .navNext{background:#16a34a;display:none}
+@keyframes shake{25%{transform:translateX(-7px)}50%{transform:translateX(7px)}75%{transform:translateX(-4px)}}@media(max-width:680px){.topbar{grid-template-columns:1fr}.answers{grid-template-columns:1fr}.app{padding:9px}.panel{padding:17px}}
+
+.answer-ar-only{
+  font-size:clamp(21px,3.6vw,30px);
+  color:#173d6d;
+  font-weight:1000;
+  line-height:1.7;
+  text-align:center;
+}
+.answer-zh-py{
+  text-align:center;
+}
+.answer-main-zh{
+  font-size:clamp(22px,3.6vw,31px);
+  color:#173d6d;
+  font-weight:1000;
+  line-height:1.35;
+}
+.answer-main-py{
+  margin-top:6px;
+  font-size:clamp(15px,2.4vw,20px);
+  color:#607895;
+  font-weight:800;
+}
+
+
+.choice-label{
+  position:absolute;
+  top:9px;
+  left:11px;
+  width:34px;
+  height:34px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#17457f;
+  color:#fff;
+  font-size:17px;
+  font-weight:1000;
+  box-shadow:0 5px 12px rgba(23,69,127,.18);
+}
+.answer{
+  position:relative;
+  padding-top:44px!important;
+}
+.answer.correct .choice-label{
+  background:#16a34a;
+}
+.answer.wrong .choice-label{
+  background:#dc2626;
+}
+
+</style></head><body>
+<div class="lesson-nav"><div><button onclick="backMap()">← 返回地图</button></div><div><button id="navNext" class="navNext" onclick="nextLevel()">下一关 →</button></div></div>
+<div class="app"><section id="start" class="screen active"><div class="panel hero"><div class="tag">YCT标准教程4 · Lesson 7 · 第1关</div><h1>🚏 第一关：交通大发现</h1><p class="subtitle">先认识本课最重要的交通、地点、远近和位置词。</p><div class="mission"><div class="mission-title">🎯 本关学习目标</div><div class="mainline">认识交通、地点、远近和位置词</div><div class="py">Rènshi jiāotōng, dìdiǎn, yuǎnjìn hé wèizhi cí</div><div class="ar">التعرّف على كلمات المواصلات والأماكن والقرب والبعد والموقع</div><div class="chips"><div class="chip">公共汽车</div><div class="chip">动物园</div><div class="chip">开车</div><div class="chip">远 / 近</div><div class="chip">旁边</div></div></div><button class="primary" onclick="startGame()">开始挑战 ▶</button></div></section>
+<section id="game" class="screen"><div class="panel"><div class="topbar"><div class="track"><div id="bar" class="bar"></div></div><div class="stats"><div id="count" class="stat">第 1 / 8</div><div class="stat">当前得分：<span id="score">0</span> ⭐</div></div></div><div class="card"><div id="mode" class="mode"></div><div class="scene"><span id="scene"></span></div><div id="qzh" class="qzh"></div><div id="qpy" class="qpy py"></div><div id="qar" class="qar ar"></div><div id="answers" class="answers"></div><div id="fb" class="feedback"></div><div class="next-wrap"><button id="next" class="next" onclick="nextQ()">下一题 ➜</button></div></div></div></section>
+<section id="end" class="screen"><div class="panel end"><div class="trophy">🏆</div><h1>🚏 第一关：交通大发现完成！</h1><div class="finalScore"><span id="final">0</span> / 80</div><div id="finalMsg" class="finalMsg"></div><div class="review"><strong>本关重点</strong><br>公共汽车 gōnggòng qìchē = الحافلة<br>动物园 dòngwùyuán = حديقة الحيوان<br>远 yuǎn = بعيد<br>近 jìn = قريب<br>旁边 pángbiān = بجانب</div><button class="primary" onclick="restart()">🔄 再玩一次</button></div></section></div>
+<script>const LEVEL=1,QS=[{"mode": "交通方式", "scene": "🚌", "zh": "“公共汽车”是哪一种交通工具？", "py": "“Gōnggòng qìchē” shì nǎ yì zhǒng jiāotōng gōngjù?", "ar": "ما وسيلة النقل التي تعنيها كلمة «公共汽车»؟", "answers": [{"zh": "公共汽车", "py": "gōnggòng qìchē", "ar": "الحافلة"}, {"zh": "汽车", "py": "qìchē", "ar": "السيارة"}, {"zh": "车站", "py": "chēzhàn", "ar": "محطة الحافلات"}, {"zh": "动物园", "py": "dòngwùyuán", "ar": "حديقة الحيوان"}], "correct": 0, "good": "🎉 对！公共汽车就是“الحافلة”。", "goodAr": "صحيح! «公共汽车» تعني الحافلة."}, {"mode": "动作词", "scene": "🚗", "zh": "哥哥自己____去学校。", "py": "Gēge zìjǐ ____ qù xuéxiào.", "ar": "الأخ يذهب إلى المدرسة بنفسه عن طريق ____ السيارة.", "answers": [{"zh": "开车", "py": "kāichē", "ar": "يقود السيارة"}, {"zh": "坐车", "py": "zuò chē", "ar": "يركب السيارة"}, {"zh": "走路", "py": "zǒulù", "ar": "يمشي"}, {"zh": "旁边", "py": "pángbiān", "ar": "بجانب"}], "correct": 0, "good": "🎉 正确！哥哥自己开车去学校。", "goodAr": "صحيح! الأخ يقود السيارة بنفسه إلى المدرسة."}, {"mode": "地点", "scene": "🦁", "zh": "“动物园”是什么地方？", "py": "“Dòngwùyuán” shì shénme dìfang?", "ar": "ما المكان الذي تعنيه «动物园»؟", "answers": [{"zh": "动物园", "py": "dòngwùyuán", "ar": "حديقة الحيوان"}, {"zh": "学校", "py": "xuéxiào", "ar": "المدرسة"}, {"zh": "车站", "py": "chēzhàn", "ar": "المحطة"}, {"zh": "公园", "py": "gōngyuán", "ar": "الحديقة"}], "correct": 0, "good": "🎉 很好！动物园 = حديقة الحيوان。", "goodAr": "ممتاز! «动物园» تعني حديقة الحيوان."}, {"mode": "判断", "scene": "✅", "zh": "“对吗？”是什么意思？", "py": "“Duì ma?” shì shénme yìsi?", "ar": "ماذا تعني «对吗？»؟", "answers": [{"zh": "对吗？", "py": "duì ma", "ar": "صحيح؟ / أليس كذلك؟"}, {"zh": "在哪儿？", "py": "zài nǎr", "ar": "أين؟"}, {"zh": "远吗？", "py": "yuǎn ma", "ar": "هل هو بعيد؟"}, {"zh": "怎么去？", "py": "zěnme qù", "ar": "كيف تذهب؟"}], "correct": 0, "good": "🎉 对！“对吗？”是在确认是否正确。", "goodAr": "صحيح! «对吗？» تُستخدم للتأكد هل الشيء صحيح."}, {"mode": "量词", "scene": "🛣️", "zh": "“一条路”里的“条”是什么？", "py": "“Yì tiáo lù” lǐ de “tiáo” shì shénme?", "ar": "ما وظيفة «条» في عبارة «一条路»؟", "answers": [{"zh": "量词", "py": "liàngcí", "ar": "كلمة قياس"}, {"zh": "动词", "py": "dòngcí", "ar": "فعل"}, {"zh": "地点", "py": "dìdiǎn", "ar": "مكان"}, {"zh": "人称", "py": "rénchēng", "ar": "ضمير شخصي"}], "correct": 0, "good": "🎉 正确！“条”是“路”的量词。", "goodAr": "صحيح! «条» هي كلمة القياس المستخدمة مع الطريق."}, {"mode": "远近", "scene": "📏", "zh": "“远”是什么意思？", "py": "“Yuǎn” shì shénme yìsi?", "ar": "ماذا تعني «远»؟", "answers": [{"zh": "远", "py": "yuǎn", "ar": "بعيد"}, {"zh": "近", "py": "jìn", "ar": "قريب"}, {"zh": "旁边", "py": "pángbiān", "ar": "بجانب"}, {"zh": "对", "py": "duì", "ar": "صحيح"}], "correct": 0, "good": "🎉 对！远 = بعيد。", "goodAr": "صحيح! «远» تعني بعيد."}, {"mode": "远近", "scene": "📍", "zh": "“近”是什么意思？", "py": "“Jìn” shì shénme yìsi?", "ar": "ماذا تعني «近»؟", "answers": [{"zh": "近", "py": "jìn", "ar": "قريب"}, {"zh": "远", "py": "yuǎn", "ar": "بعيد"}, {"zh": "路", "py": "lù", "ar": "طريق"}, {"zh": "开", "py": "kāi", "ar": "يقود"}], "correct": 0, "good": "🎉 很好！近 = قريب。", "goodAr": "رائع! «近» تعني قريب."}, {"mode": "位置", "scene": "🚏", "zh": "“旁边”是什么意思？", "py": "“Pángbiān” shì shénme yìsi?", "ar": "ماذا تعني «旁边»؟", "answers": [{"zh": "旁边", "py": "pángbiān", "ar": "بجانب"}, {"zh": "前边", "py": "qiánbian", "ar": "أمام"}, {"zh": "后边", "py": "hòubian", "ar": "خلف"}, {"zh": "里面", "py": "lǐmiàn", "ar": "داخل"}], "correct": 0, "good": "🏆 正确！旁边 = بجانب。", "goodAr": "صحيح! «旁边» تعني بجانب."}];let i=0,score=0,locked=false;const $=id=>document.getElementById(id);
+function backMap(){if(parent&&parent!==window)parent.postMessage({type:"lesson7BackToMap",level:LEVEL},"*");else location.href="index.html"}function nextLevel(){parent.postMessage({type:"lesson7OpenLevel",level:2},"*")}
+
+function shuffleAnswers(arr){
+  const items=arr.map((answer,originalIndex)=>({answer,originalIndex}));
+  for(let k=items.length-1;k>0;k--){
+    const j=Math.floor(Math.random()*(k+1));
+    [items[k],items[j]]=[items[j],items[k]];
+  }
+  return items;
+}
+
+function startGame(){i=0;score=0;$("start").classList.remove("active");$("game").classList.add("active");render()}
+function render(){locked=false;const q=QS[i];$("count").textContent=`第 ${i+1} / ${QS.length}`;$("score").textContent=score;$("bar").style.width=`${i/QS.length*100}%`;$("mode").textContent=q.mode;$("scene").textContent=q.scene;$("qzh").textContent=q.zh;$("qpy").textContent=q.py;$("qar").textContent=q.ar;$("fb").className="feedback";$("fb").innerHTML="";$("next").classList.remove("show");const box=$("answers");box.innerHTML="";const shuffled=shuffleAnswers(q.answers);shuffled.forEach((item,pos)=>{const a=item.answer,n=item.originalIndex;const b=document.createElement("button");b.className="answer";
+
+let answerHTML="";
+if(q.zh.includes("哥哥自己____去学校")){
+  // 句子填空题：答案显示中文 + 拼音
+  answerHTML=`<div class="answer-zh-py"><div class="answer-main-zh">${a.zh}</div><div class="answer-main-py">${a.py}</div></div>`;
+}else if(
+  q.zh.includes("“公共汽车”是哪一种交通工具") ||
+  q.zh.includes("“动物园”是什么地方") ||
+  q.zh.includes("“对吗？”是什么意思") ||
+  q.zh.includes("“远”是什么意思") ||
+  q.zh.includes("“近”是什么意思") ||
+  q.zh.includes("“旁边”是什么意思")
+){
+  // 词义理解题：答案只显示阿语
+  answerHTML=`<div class="answer-ar-only ar">${a.ar}</div>`;
+}else{
+  // 其它题默认中文 + 拼音 + 阿语
+  answerHTML=`<div class="azh">${a.zh}</div><div class="apy">${a.py}</div><div class="aar ar">${a.ar}</div>`;
+}
+
+b.innerHTML=`<div class="choice-label">${"ABCD"[pos]}</div>`+answerHTML;b.onclick=()=>choose(n,b);box.appendChild(b)})}
+function choose(n,b){if(locked)return;const q=QS[i];if(n===q.correct){locked=true;b.classList.add("correct");score+=10;$("score").textContent=score;$("fb").className="feedback good show";$("fb").innerHTML=`<div class="fzh">${q.good}</div><div class="py" style="margin-top:5px">${q.answers[q.correct].zh} · ${q.answers[q.correct].py}</div><div class="far ar">${q.answers[q.correct].ar}</div>`;[...$("answers").children].forEach(x=>{x.disabled=true});$("bar").style.width=`${(i+1)/QS.length*100}%`;$("next").classList.add("show")}else{b.classList.add("wrong");$("fb").className="feedback bad show";$("fb").innerHTML='<div class="fzh">💪 再想一想！</div><div class="far ar">حاول مرة أخرى!</div>';setTimeout(()=>b.classList.remove("wrong"),650)}}
+function nextQ(){if(!locked)return;i++;i>=QS.length?finish():render()}function finish(){$("game").classList.remove("active");$("end").classList.add("active");$("final").textContent=score;let z,a;if(score===80){z="🎉 恭喜你顺利通关！";a="تهانينا! لقد أكملت المرحلة بنجاح!"}else if(score>=60){z="🌟 非常棒！继续练习！";a="ممتاز جدًا! استمر في التمرين!"}else if(score>=40){z="💪 不错！再挑战一次！";a="جيد! حاول مرة أخرى!"}else{z="📚 别放弃，再来一次！";a="لا تستسلم، حاول مرة أخرى!"}$("finalMsg").innerHTML=`<div class="fzh">${z}</div><div class="far ar">${a}</div>`;$("navNext").style.display="inline-block";if(parent&&parent!==window)parent.postMessage({type:"lesson7Complete",level:LEVEL},"*")}function restart(){$("end").classList.remove("active");$("start").classList.add("active")}</script></body></html>
